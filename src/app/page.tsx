@@ -1,103 +1,186 @@
-import Image from "next/image";
+import React from 'react';
+import Layout from '@/components/Layout';
+import About from '@/components/About';
+import Projects from '@/components/Projects';
+import { FaNodeJs, FaReact, FaAws, FaUbuntu, FaGitAlt, FaSearch } from 'react-icons/fa';
+import { SiExpress, SiRedux, SiSocketdotio, SiRedis, SiGraphql, SiMongodb, SiPostgresql, SiMysql, SiNginx, SiJest } from 'react-icons/si';
+
+const skills = {
+  web: [
+    { name: 'Node.js', icon: <FaNodeJs /> },
+    { name: 'Express', icon: <SiExpress /> },
+    { name: 'React.js', icon: <FaReact /> },
+    { name: 'Redux', icon: <SiRedux /> },
+    { name: 'Socket.io', icon: <SiSocketdotio /> },
+    { name: 'Redis', icon: <SiRedis /> },
+    { name: 'React Native', icon: <FaReact /> },
+    { name: 'GraphQL', icon: <SiGraphql /> },
+  ],
+  database: [
+    { name: 'MongoDB', icon: <SiMongodb /> },
+    { name: 'PostgreSQL', icon: <SiPostgresql /> },
+    { name: 'MySQL', icon: <SiMysql /> },
+  ],
+  misc: [
+    { name: 'AWS', icon: <FaAws /> },
+    { name: 'Ubuntu', icon: <FaUbuntu /> },
+    { name: 'Nginx', icon: <SiNginx /> },
+    { name: 'GIT', icon: <FaGitAlt /> },
+    { name: 'SEO', icon: <FaSearch /> },
+    { name: 'Jest', icon: <SiJest /> },
+  ],
+};
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <Layout>
+      <div className="container">
+        {/* Hero Section */}
+        <section id="hero">
+          <div style={{ textAlign: 'center' }}>
+            <h1>Raj Kumar</h1>
+            <h2 style={{ color: 'var(--gray-600)', marginBottom: '1rem' }}>Full Stack Developer | 5+ years experience</h2>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+              <a href="tel:+916394258567">+91 6394258567</a>
+              <a href="mailto:rkgt76@gmail.com">rkgt76@gmail.com</a>
+            </div>
+          </div>
+        </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        {/* About Section */}
+        <About />
+
+        {/* Experience Section */}
+        <section id="experience">
+          <h2>Work Experience</h2>
+          <div className="experience-card">
+            <h3>Forgeahead Solutions Pvt Ltd — Software Engineer</h3>
+            <p>Aug 2022 - Apr 2023</p>
+            <ul>
+              <li>Bajaj Finance(Knowledge Hub): CMS with ability to update various kinds of content and user ranking system</li>
+              <li>Development of email logging system which tracks status of email sent</li>
+              <li>Enhancement of user ranking module and changing algorithm according to requirements</li>
+              <li>Debugged the application for bugs and made changes to fix them</li>
+            </ul>
+          </div>
+
+          <div className="experience-card">
+            <h3>RSG Media Systems Pvt Ltd — Software Engineer</h3>
+            <p>SEP 2021 - May 2022</p>
+            <ul>
+              <li>Rights Logic 4.0: Platform for enterprise-wide strategic rights management for deals and finances</li>
+              <li>Worked on the finance module, for revenue calculation and budget estimation</li>
+              <li>Realtime dashboard screen for ongoing deals and finance</li>
+            </ul>
+          </div>
+
+          <div className="experience-card">
+            <h3>smartData Enterprises, Mohali — Software Associate</h3>
+            <p>JAN 2021 - SEP 2021</p>
+            <ul>
+              <li>Guardian Lane: Platform for online community of kids healing together from losses</li>
+              <li>Build 1-1 video calling functionality using twilio sdk</li>
+              <li>Video analytics for the videos uploaded on the platform</li>
+            </ul>
+          </div>
+
+          <div className="experience-card">
+            <h3>Web Sultanate Softwares — Software Engineer</h3>
+            <p>DEC 2019 - DEC 2020</p>
+            <ul>
+              <li>Day of Duel: Online game platform for playing various kinds of games by maintaining wallet currency</li>
+              <li>Setup wallet management sections of the platform</li>
+              <li>Developed tournament modules for the games to be played</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <Projects />
+
+        {/* Skills Section */}
+        <section id="skills">
+          <h2>Skills</h2>
+          <div className="skills-grid">
+            <div>
+              <h3>Web Technologies</h3>
+              <div className="skills-container">
+                {skills.web.map((skill) => (
+                  <span key={skill.name} className="skill-tag">
+                    <span className="skill-icon">{skill.icon}</span>
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3>Database</h3>
+              <div className="skills-container">
+                {skills.database.map((skill) => (
+                  <span key={skill.name} className="skill-tag">
+                    <span className="skill-icon">{skill.icon}</span>
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3>Miscellaneous</h3>
+              <div className="skills-container">
+                {skills.misc.map((skill) => (
+                  <span key={skill.name} className="skill-tag">
+                    <span className="skill-icon">{skill.icon}</span>
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Education Section */}
+        <section id="education">
+          <h2>Education</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
+              <h3>B.Tech(CS)</h3>
+              <p style={{ color: 'var(--gray-600)' }}>BBDNIIT Lucknow, 2014</p>
+            </div>
+            <div>
+              <h3>Jesus & Mary School & College</h3>
+              <p style={{ color: 'var(--gray-600)' }}>Balrampur, 2009</p>
+            </div>
+            <div>
+              <h3>St. Francis School</h3>
+              <p style={{ color: 'var(--gray-600)' }}>Anpara, 2007</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Certifications Section */}
+        <section id="certifications">
+          <h2>Certifications</h2>
+          <div>
+            <h3>AWS Certified Developer – Associate</h3>
+            <a 
+              href="https://www.credly.com/badges/e3cd91a5-8ee0-4c4d-9128-d9b08bef313b"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Credential
+            </a>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact">
+          <h2>Contact</h2>
+          <div style={{ textAlign: 'center' }}>
+            <p>Mobile: <a href="tel:+916394258567">+91 6394258567</a></p>
+            <p>Email: <a href="mailto:rkgt76@gmail.com">rkgt76@gmail.com</a></p>
+          </div>
+        </section>
+      </div>
+    </Layout>
   );
 }

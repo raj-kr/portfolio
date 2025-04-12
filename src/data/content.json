@@ -1,0 +1,153 @@
+{
+  "profile": {
+    "name": "Raj Kumar",
+    "title": "Full Stack Developer",
+    "experience": "5+ years experience",
+    "contact": {
+      "phone": "+91 6394258567",
+      "email": "rkgt76@gmail.com"
+    }
+  },
+  "sections": [
+    {
+      "id": "about",
+      "title": "About",
+      "type": "hero",
+      "content": {
+        "description": "Full Stack Developer with 5+ years of experience in building web and mobile applications."
+      }
+    },
+    {
+      "id": "experience",
+      "title": "Work Experience",
+      "type": "timeline",
+      "items": [
+        {
+          "company": "Forgeahead Solutions Pvt Ltd",
+          "position": "Software Engineer",
+          "period": "Aug 2022 - Apr 2023",
+          "description": [
+            "Bajaj Finance(Knowledge Hub): CMS with ability to update various kinds of content and user ranking system",
+            "Development of email logging system which tracks status of email sent",
+            "Enhancement of user ranking module and changing algorithm according to requirements",
+            "Debugged the application for bugs and made changes to fix them"
+          ]
+        },
+        {
+          "company": "RSG Media Systems Pvt Ltd",
+          "position": "Software Engineer",
+          "period": "SEP 2021 - May 2022",
+          "description": [
+            "Rights Logic 4.0: Platform for enterprise-wide strategic rights management for deals and finances",
+            "Worked on the finance module, for revenue calculation and budget estimation",
+            "Realtime dashboard screen for ongoing deals and finance"
+          ]
+        },
+        {
+          "company": "smartData Enterprises, Mohali",
+          "position": "Software Associate",
+          "period": "JAN 2021 - SEP 2021",
+          "description": [
+            "Guardian Lane: Platform for online community of kids healing together from losses",
+            "Build 1-1 video calling functionality using twilio sdk",
+            "Video analytics for the videos uploaded on the platform"
+          ]
+        },
+        {
+          "company": "Web Sultanate Softwares",
+          "position": "Software Engineer",
+          "period": "DEC 2019 - DEC 2020",
+          "description": [
+            "Day of Duel: Online game platform for playing various kinds of games by maintaining wallet currency",
+            "Setup wallet management sections of the platform",
+            "Developed tournament modules for the games to be played"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "title": "Projects",
+      "type": "cards",
+      "items": [
+        {
+          "title": "Selfistan",
+          "description": "App for ranking selfies uploaded from the users",
+          "technologies": "React Native, Nodejs, MongoDB, AWS services(EC2, SNS, SES), Nginx"
+        }
+      ]
+    },
+    {
+      "id": "skills",
+      "title": "Skills",
+      "type": "categories",
+      "categories": [
+        {
+          "name": "Web Technologies",
+          "items": [
+            { "name": "Node.js", "icon": "FaNodeJs" },
+            { "name": "Express", "icon": "SiExpress" },
+            { "name": "React.js", "icon": "FaReact" },
+            { "name": "Redux", "icon": "SiRedux" },
+            { "name": "Socket.io", "icon": "SiSocketdotio" },
+            { "name": "Redis", "icon": "SiRedis" },
+            { "name": "React Native", "icon": "FaReact" },
+            { "name": "GraphQL", "icon": "SiGraphql" }
+          ]
+        },
+        {
+          "name": "Database",
+          "items": [
+            { "name": "MongoDB", "icon": "SiMongodb" },
+            { "name": "PostgreSQL", "icon": "SiPostgresql" },
+            { "name": "MySQL", "icon": "SiMysql" }
+          ]
+        },
+        {
+          "name": "Miscellaneous",
+          "items": [
+            { "name": "AWS", "icon": "FaAws" },
+            { "name": "Ubuntu", "icon": "FaUbuntu" },
+            { "name": "Nginx", "icon": "SiNginx" },
+            { "name": "GIT", "icon": "FaGitAlt" },
+            { "name": "SEO", "icon": "FaSearch" },
+            { "name": "Jest", "icon": "SiJest" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "education",
+      "title": "Education",
+      "type": "list",
+      "items": [
+        {
+          "degree": "B.Tech(CS)",
+          "institution": "BBDNIIT Lucknow",
+          "year": "2014"
+        },
+        {
+          "degree": "Higher Secondary",
+          "institution": "Jesus & Mary School & College",
+          "year": "2009"
+        },
+        {
+          "degree": "Secondary",
+          "institution": "St. Francis School",
+          "year": "2007"
+        }
+      ]
+    },
+    {
+      "id": "certifications",
+      "title": "Certifications",
+      "type": "list",
+      "items": [
+        {
+          "title": "AWS Certified Developer – Associate",
+          "credential": "https://www.credly.com/badges/e3cd91a5-8ee0-4c4d-9128-d9b08bef313b"
+        }
+      ]
+    }
+  ]
+} 
