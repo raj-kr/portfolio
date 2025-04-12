@@ -10,6 +10,9 @@
    - live public chat whoever present on that page.
    - other think what else can be presented.
    - make a page with the list of user visited this site with information about their IP, country, city, browser and other details.
+   - a page, where the speed and other performance metrics is displayed on it. when accessed from different countries.
+   - upload a large video and play without buffer for large files.
+   - make a pages for common setup of different technologies like Mac Setup, db connections, other gist usually required.
 6. create page to show architecture of this website with the diagram and monthly cost to maintain this website.
 7. create small online games on some page.
 8. make the website to work offline 
