@@ -39,10 +39,10 @@ export default function Home() {
         <section id="hero">
           <div style={{ textAlign: 'center' }}>
             <h1>Raj Kumar</h1>
-            <h2 style={{ color: 'var(--gray-600)', marginBottom: '1rem' }}>Full Stack Developer | 5+ years experience</h2>
+            <h2 style={{ color: 'var(--gray-600)', marginBottom: '1rem' }}>Full Stack Developer</h2>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-              <a href="tel:+916394258567">+91 6394258567</a>
-              <a href="mailto:rkgt76@gmail.com">rkgt76@gmail.com</a>
+              {/* <a href="tel:+916394258567">+91 6394258567</a>
+              <a href="mailto:rkgt76@gmail.com">rkgt76@gmail.com</a> */}
             </div>
           </div>
         </section>
@@ -173,13 +173,13 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact">
+        {/* <section id="contact">
           <h2>Contact</h2>
           <div style={{ textAlign: 'center' }}>
             <p>Mobile: <a href="tel:+916394258567">+91 6394258567</a></p>
             <p>Email: <a href="mailto:rkgt76@gmail.com">rkgt76@gmail.com</a></p>
           </div>
-        </section>
+        </section> */}
       </div>
     </Layout>
   );
