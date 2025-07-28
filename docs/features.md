@@ -1,4 +1,4 @@
-# List of features to be developed on this site.
+# List of features to be developed on this site
 
 1. Move project from next to vite react applications.
 2. embed github activity chart in the website most probably on the home screen.
@@ -15,4 +15,4 @@
    - make a pages for common setup of different technologies like Mac Setup, db connections, other gist usually required.
 6. create page to show architecture of this website with the diagram and monthly cost to maintain this website.
 7. create small online games on some page.
-8. make the website to work offline 
+8. make the website to work offline.
