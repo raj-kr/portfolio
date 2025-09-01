@@ -19,11 +19,19 @@ export const trackEvent = (
 ) => {
   if (!isGAEnabled || typeof window === "undefined") return;
 
-  window.gtag("event", action, {
+  const config: Record<string, string | number | boolean> = {
     event_category: category,
-    event_label: label,
-    value: value,
-  });
+  };
+
+  if (label !== undefined) {
+    config.event_label = label;
+  }
+
+  if (value !== undefined) {
+    config.value = value;
+  }
+
+  window.gtag("event", action, config);
 };
 
 // Track button clicks
