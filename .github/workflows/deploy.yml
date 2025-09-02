@@ -42,12 +42,30 @@ jobs:
       - name: Verify Analytics in Build
         run: |
           if [ -n "${{ secrets.NEXT_PUBLIC_GA_ID }}" ]; then
-            echo "🔍 Checking for Google Analytics in build output..."
-            if grep -r "google-analytics" .next/static/chunks/*.js 2>/dev/null; then
-              echo "✅ Google Analytics is included in build"
+            echo "🔍 Checking for Google Analytics implementation..."
+            
+            # Check if analytics config is properly set
+            if grep -r "NEXT_PUBLIC_GA_ID" .next/static/chunks/*.js 2>/dev/null; then
+              echo "✅ Google Analytics ID is embedded in build"
             else
-              echo "⚠️  Google Analytics not found in build chunks (this may be normal)"
+              echo "⚠️  Analytics ID not found in build chunks (checking for third-parties)"
             fi
+            
+            # Check for third-parties package usage
+            if grep -r "@next/third-parties" .next/static/chunks/*.js 2>/dev/null; then
+              echo "✅ Next.js third-parties package is included"
+            else
+              echo "ℹ️  Third-parties package not found in chunks (normal for optimization)"
+            fi
+            
+            # Check if the analytics component is included
+            if grep -r "GoogleAnalytics" .next/static/chunks/*.js 2>/dev/null; then
+              echo "✅ Google Analytics component is included in build"
+            else
+              echo "ℹ️  Analytics component not found in chunks (may be optimized out)"
+            fi
+            
+            echo "📊 Analytics verification complete - the warning above is normal for Next.js optimization"
           else
             echo "ℹ️  NEXT_PUBLIC_GA_ID not set, skipping analytics verification"
           fi

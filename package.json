@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "validate:analytics": "node scripts/validate-analytics.js"
+    "validate:analytics": "node scripts/validate-analytics.js",
+    "test:analytics": "node scripts/test-analytics.js",
+    "test:analytics:production": "node scripts/test-production-analytics.js"
   },
   "dependencies": {
     "@next/third-parties": "^15.5.2",
