@@ -14,7 +14,7 @@ const About: React.FC = () => {
           <p className="text-lg">
             Adept in cloud services (AWS), testing frameworks (Jest, Cypress), and Agile methodologies. 
             Mentored junior developers and contributed to full lifecycle project management. 
-            Currently expanding skills in cloud computing and react native applications.
+            Currently expanding skills in cloud computing and react native applications and.
           </p>
         </div>
       </div>
