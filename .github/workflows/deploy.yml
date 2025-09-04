@@ -6,7 +6,7 @@ name: Deploy to S3 & Invalidate CloudFront
 # - AWS_REGION: AWS region (e.g., us-east-1)
 # - S3_BUCKET: S3 bucket name for deployment
 # - DISTRIBUTION_ID: CloudFront distribution ID for invalidation
-# - NEXT_PUBLIC_GA_ID: Google Analytics Measurement ID (optional, format: G-XXXXXXXXXX)
+# - VITE_GA_ID: Google Analytics Measurement ID (optional, format: G-XXXXXXXXXX)
 
 on:
   push:
@@ -32,42 +32,42 @@ jobs:
       - name: Build site
         run: npm run build
         env:
-          NEXT_PUBLIC_GA_ID: ${{ secrets.NEXT_PUBLIC_GA_ID }}
+          VITE_GA_ID: ${{ secrets.VITE_GA_ID }}
 
       - name: Validate Analytics Configuration
         run: npm run validate:analytics
         env:
-          NEXT_PUBLIC_GA_ID: ${{ secrets.NEXT_PUBLIC_GA_ID }}
+          VITE_GA_ID: ${{ secrets.VITE_GA_ID }}
 
       - name: Verify Analytics in Build
         run: |
-          if [ -n "${{ secrets.NEXT_PUBLIC_GA_ID }}" ]; then
+          if [ -n "${{ secrets.VITE_GA_ID }}" ]; then
             echo "🔍 Checking for Google Analytics implementation..."
             
             # Check if analytics config is properly set
-            if grep -r "NEXT_PUBLIC_GA_ID" .next/static/chunks/*.js 2>/dev/null; then
+            if grep -r "VITE_GA_ID" dist/assets/*.js 2>/dev/null; then
               echo "✅ Google Analytics ID is embedded in build"
             else
-              echo "⚠️  Analytics ID not found in build chunks (checking for third-parties)"
+              echo "⚠️  Analytics ID not found in build chunks (checking for Vite optimization)"
             fi
             
-            # Check for third-parties package usage
-            if grep -r "@next/third-parties" .next/static/chunks/*.js 2>/dev/null; then
-              echo "✅ Next.js third-parties package is included"
+            # Check for Google Analytics script
+            if grep -r "googletagmanager.com" dist/assets/*.js 2>/dev/null; then
+              echo "✅ Google Analytics script is included"
             else
-              echo "ℹ️  Third-parties package not found in chunks (normal for optimization)"
+              echo "ℹ️  Google Analytics script not found in chunks (may be optimized out)"
             fi
             
             # Check if the analytics component is included
-            if grep -r "GoogleAnalytics" .next/static/chunks/*.js 2>/dev/null; then
+            if grep -r "GoogleAnalytics" dist/assets/*.js 2>/dev/null; then
               echo "✅ Google Analytics component is included in build"
             else
               echo "ℹ️  Analytics component not found in chunks (may be optimized out)"
             fi
             
-            echo "📊 Analytics verification complete - the warning above is normal for Next.js optimization"
+            echo "📊 Analytics verification complete - the warning above is normal for Vite optimization"
           else
-            echo "ℹ️  NEXT_PUBLIC_GA_ID not set, skipping analytics verification"
+            echo "ℹ️  VITE_GA_ID not set, skipping analytics verification"
           fi
 
       - name: Configure AWS credentials
@@ -86,7 +86,7 @@ jobs:
             echo "Error: S3_BUCKET secret is not set"
             exit 1
           fi
-          aws s3 sync out/ s3://${{ secrets.S3_BUCKET }} --delete
+          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET }} --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

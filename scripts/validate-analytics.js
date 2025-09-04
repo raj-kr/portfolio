@@ -5,8 +5,12 @@
  * Use this script in CI/CD pipelines to validate analytics setup
  */
 
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env.local if it exists
 function loadEnvFile() {
@@ -46,7 +50,7 @@ function log(message, color = "reset") {
 
 function validateGAId(gaId) {
   if (!gaId) {
-    log("❌ NEXT_PUBLIC_GA_ID environment variable is not set", "red");
+    log("❌ VITE_GA_ID environment variable is not set", "red");
     return false;
   }
 
@@ -109,7 +113,7 @@ function main() {
   log("🔍 Google Analytics Validation", "blue");
   log("==============================", "blue");
 
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gaId = process.env.VITE_GA_ID;
   let isValid = true;
 
   // Validate GA ID
@@ -128,7 +132,7 @@ function main() {
   if (isValid) {
     log("✅ Google Analytics is properly configured for CI/CD", "green");
     log(
-      "💡 Remember to set NEXT_PUBLIC_GA_ID in your CI/CD environment variables",
+      "💡 Remember to set VITE_GA_ID in your CI/CD environment variables",
       "blue"
     );
   } else {
@@ -148,12 +152,6 @@ function main() {
 }
 
 // Run validation
-if (require.main === module) {
-  main();
-}
+main();
 
-module.exports = {
-  validateGAId,
-  checkBuildFiles,
-  checkEnvironmentFiles,
-};
+export { validateGAId, checkBuildFiles, checkEnvironmentFiles };

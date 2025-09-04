@@ -1,7 +1,5 @@
-"use client";
-
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
 import {
   trackPageView,
   trackEvent,
@@ -13,7 +11,8 @@ import {
 } from "@/utils/analytics";
 
 export const useAnalytics = () => {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   // Track page views on route changes
   useEffect(() => {

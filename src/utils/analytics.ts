@@ -70,10 +70,6 @@ export const trackTimeOnPage = (seconds: number) => {
 // Declare gtag for TypeScript
 declare global {
   interface Window {
-    gtag: (
-      command: "config" | "event",
-      targetId: string,
-      config?: Record<string, string | number | boolean>
-    ) => void;
+    gtag: (...args: any[]) => void;
   }
 }

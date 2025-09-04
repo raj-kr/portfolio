@@ -26,7 +26,7 @@ This guide shows how to set up the required GitHub secrets for the analytics-ena
    - Used for cache invalidation after deployment
 
 ### Analytics Secret (Optional)
-6. **NEXT_PUBLIC_GA_ID**
+6. **VITE_GA_ID**
    - Your Google Analytics Measurement ID
    - Format: `G-XXXXXXXXXX` (where X are alphanumeric characters)
    - If not set, analytics will be disabled
@@ -49,7 +49,7 @@ S3_BUCKET=my-website-bucket
 DISTRIBUTION_ID=E1234567890ABCD
 
 # Google Analytics (Optional)
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+VITE_GA_ID=G-XXXXXXXXXX
 ```
 
 ## Testing the Setup
@@ -62,9 +62,9 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 ## Troubleshooting
 
 ### Analytics Not Working
-- Check that `NEXT_PUBLIC_GA_ID` is set correctly
+- Check that `VITE_GA_ID` is set correctly
 - Verify the GA ID format (G-XXXXXXXXXX)
-- Ensure the secret is named exactly `NEXT_PUBLIC_GA_ID`
+- Ensure the secret is named exactly `VITE_GA_ID`
 
 ### Build Fails
 - Check that all required AWS secrets are set

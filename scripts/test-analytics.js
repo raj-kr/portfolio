@@ -5,8 +5,12 @@
  * Use this script to test if analytics is working in the browser
  */
 
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env.local if it exists
 function loadEnvFile() {
@@ -45,10 +49,10 @@ function log(message, color = "reset") {
 }
 
 function generateTestHTML() {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gaId = process.env.VITE_GA_ID;
 
   if (!gaId) {
-    log("❌ NEXT_PUBLIC_GA_ID not set", "red");
+    log("❌ VITE_GA_ID not set", "red");
     return false;
   }
 
@@ -113,10 +117,10 @@ function main() {
   log("🧪 Google Analytics Test", "blue");
   log("======================", "blue");
 
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gaId = process.env.VITE_GA_ID;
 
   if (!gaId) {
-    log("❌ NEXT_PUBLIC_GA_ID environment variable is not set", "red");
+    log("❌ VITE_GA_ID environment variable is not set", "red");
     log("💡 Set the environment variable to test analytics", "yellow");
     return;
   }
@@ -136,10 +140,6 @@ function main() {
 }
 
 // Run test
-if (require.main === module) {
-  main();
-}
+main();
 
-module.exports = {
-  generateTestHTML,
-};
+export { generateTestHTML };

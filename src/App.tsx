@@ -1,16 +1,20 @@
-import React from 'react';
-import Hero from '@/components/Hero';
-import About from '@/components/About';
-import Skills from '@/components/Skills';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import GoogleAnalyticsComponent from './components/GoogleAnalytics';
+import { GA_ID, isGAEnabled } from './config/analytics';
 
-const App: React.FC = () => {
+function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Hero />
-      <About />
-      <Skills />
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+        {isGAEnabled && <GoogleAnalyticsComponent gaId={GA_ID} />}
+      </Layout>
+    </Router>
   );
-};
+}
 
-export default App; 
+export default App;

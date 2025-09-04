@@ -5,9 +5,9 @@
  * Use this script to test Google Analytics in production
  */
 
-const https = require("https");
-const http = require("http");
-const { URL } = require("url");
+import https from "https";
+import http from "http";
+import { URL } from "url";
 
 // Colors for console output
 const colors = {
@@ -173,10 +173,6 @@ async function testProductionAnalytics(productionUrl) {
 const productionUrl = process.argv[2];
 
 // Run the test
-if (require.main === module) {
-  testProductionAnalytics(productionUrl);
-}
+testProductionAnalytics(productionUrl);
 
-module.exports = {
-  testProductionAnalytics,
-};
+export { testProductionAnalytics };
