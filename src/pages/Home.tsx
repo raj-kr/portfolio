@@ -1,5 +1,6 @@
 import About from '@/components/About';
 import Projects from '@/components/Projects';
+import ContactModalTest from '@/components/ContactModalTest';
 import { FaNodeJs, FaReact, FaAws, FaUbuntu, FaGitAlt, FaSearch } from 'react-icons/fa';
 import { SiExpress, SiRedux, SiSocketdotio, SiRedis, SiGraphql, SiMongodb, SiPostgresql, SiMysql, SiNginx, SiJest } from 'react-icons/si';
 
@@ -170,13 +171,15 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      {/* <section id="contact">
+      <section id="contact">
         <h2>Contact</h2>
         <div style={{ textAlign: 'center' }}>
-          <p>Mobile: <a href="tel:+916394258567">+91 6394258567</a></p>
-          <p>Email: <a href="mailto:rkgt76@gmail.com">rkgt76@gmail.com</a></p>
+          <p>Click the "Contact" button in the navigation to send me a message!</p>
         </div>
-      </section> */}
+        
+        {/* Test Component - Remove this in production */}
+        {import.meta.env.DEV && <ContactModalTest />}
+      </section>
     </div>
   );
 }
