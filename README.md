@@ -4,10 +4,12 @@ This is the portfolio website of Raj Kumar, a Full Stack Developer with 5+ years
 
 ## Technologies Used
 
-- Next.js 14
+- Vite + React
 - TypeScript
-- Tailwind CSS
-- React
+- CSS3 (Custom Styling)
+- React Router DOM
+- AWS Lambda (Contact Form)
+- AWS SES (Email Service)
 
 ## Getting Started
 
@@ -15,6 +17,7 @@ This is the portfolio website of Raj Kumar, a Full Stack Developer with 5+ years
 
 - Node.js 18.0 or later
 - npm or yarn
+- AWS CLI (for Lambda deployment)
 
 ### Installation
 
@@ -43,21 +46,64 @@ yarn dev
 
 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Contact Form Setup
+
+The portfolio includes a contact form that sends emails via AWS Lambda and SES:
+
+1. **Deploy Lambda function**:
+   ```bash
+   cd lambda/contact-form
+   npm install
+   ./deploy.sh
+   ```
+
+2. **Set up API Gateway** (see `docs/api-setup-guide.md`)
+
+3. **Configure frontend API** (update `src/config/api.ts` with your API Gateway URL)
+
 ## Deployment
 
-The website can be easily deployed to Vercel:
+### Frontend Deployment
 
-1. Push your code to a GitHub repository
-2. Import the project in Vercel
-3. Deploy!
+The website can be deployed to various platforms:
+
+1. **GitHub Actions + S3** (configured):
+   - Push to main branch
+   - Automatic build and deployment
+
+2. **Manual Deployment**:
+   ```bash
+   npm run build
+   # Upload 'dist' folder to your hosting service
+   ```
+
+### Complete Deployment
+
+Deploy both frontend and Lambda:
+
+```bash
+./scripts/deploy-all.sh
+```
+
+Deploy only Lambda:
+```bash
+./scripts/deploy-all.sh --lambda-only
+```
+
+Deploy only frontend:
+```bash
+./scripts/deploy-all.sh --frontend-only
+```
 
 ## Features
 
-- Responsive design
-- Smooth scrolling navigation
-- Modern UI with Tailwind CSS
-- SEO optimized
-- Fast loading with Next.js
+- **Responsive Design**: Works perfectly on all devices
+- **Contact Form**: Interactive modal with email integration
+- **Analytics**: Google Analytics 4 integration
+- **Modern UI**: Clean, professional design
+- **Fast Loading**: Optimized with Vite
+- **TypeScript**: Full type safety
+- **AWS Integration**: Lambda + SES for contact form
 
 ## License
 

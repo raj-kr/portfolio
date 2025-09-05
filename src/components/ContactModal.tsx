@@ -257,7 +257,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               onChange={handleInputChange}
               required
               rows={5}
-              placeholder="Tell me about your project or just say hello..."
+              placeholder="Wanna talk about something or just say hello..."
               style={{
                 width: '100%',
                 padding: '0.75rem',

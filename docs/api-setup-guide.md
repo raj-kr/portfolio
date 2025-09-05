@@ -262,6 +262,7 @@ VITE_API_KEY=your-api-key-if-needed
 ### 3.3 Update GitHub Secrets
 
 Add to your GitHub repository secrets:
+
 - `VITE_API_KEY`: Your API Gateway key (if using API keys)
 
 ## 🔧 Step 4: Configure AWS SES
@@ -361,6 +362,7 @@ aws logs describe-log-groups --log-group-name-prefix /aws/lambda/contact-form-ha
 ### 7.2 API Gateway Metrics
 
 Monitor API Gateway metrics in the AWS Console:
+
 - Request count
 - Latency
 - Error rates

@@ -171,12 +171,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact">
-        <h2>Contact</h2>
-        <div style={{ textAlign: 'center' }}>
-          <p>Click the "Contact" button in the navigation to send me a message!</p>
-        </div>
-        
+      <section id="contact">        
         {/* Test Component - Remove this in production */}
         {import.meta.env.DEV && <ContactModalTest />}
       </section>

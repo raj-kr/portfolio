@@ -1,0 +1,30 @@
+{
+  "name": "contact-form-lambda",
+  "version": "1.0.0",
+  "description": "Lambda function for handling contact form submissions",
+  "main": "index.js",
+  "scripts": {
+    "build": "zip -r contact-form-lambda.zip index.js node_modules/",
+    "build:windows": "powershell -Command \"Compress-Archive -Path 'index.js', 'node_modules' -DestinationPath 'contact-form-lambda.zip' -Force\"",
+    "deploy": "aws lambda update-function-code --function-name contact-form-handler --zip-file fileb://contact-form-lambda.zip",
+    "deploy:windows": "./deploy_windows.sh",
+    "deploy:windows:bat": "deploy_windows.bat",
+    "deploy:windows:ps1": "powershell -ExecutionPolicy Bypass -File deploy_windows.ps1",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1692.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "contact-form",
+    "ses",
+    "api-gateway"
+  ],
+  "author": "Raj Kumar",
+  "license": "MIT"
+}
