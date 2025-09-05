@@ -4,7 +4,7 @@
 
 **The Lambda function should be in a separate folder within your project root**, not inside the main project. Here's the recommended structure:
 
-```
+```txt
 raj.kr/                          # Project root
 ├── src/                         # Frontend (Vite React)
 ├── lambda/                      # Backend (AWS Lambda) ← NEW
@@ -23,6 +23,7 @@ raj.kr/                          # Project root
 ## ✅ **Why Separate Folder?**
 
 ### **Benefits:**
+
 - **Clean Separation**: Frontend and backend code are organized separately
 - **Independent Dependencies**: Lambda has its own `package.json` and dependencies
 - **Separate Deployment**: Can deploy Lambda independently from frontend
@@ -30,6 +31,7 @@ raj.kr/                          # Project root
 - **CI/CD Flexibility**: Different deployment pipelines for frontend and backend
 
 ### **Alternative Approaches:**
+
 1. **Separate Repository**: Create a completely separate repo for Lambda (overkill for this project)
 2. **Monorepo Structure**: Use tools like Lerna or Nx (unnecessary complexity)
 3. **Same Folder**: Mix Lambda code with frontend (not recommended - messy)

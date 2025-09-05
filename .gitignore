@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+lambda/*/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -13,7 +14,10 @@
 # testing
 /coverage
 
-# next.js
+# Vite build output
+/dist
+
+# Next.js (legacy - keeping for reference)
 /.next/
 /out/
 
@@ -39,3 +43,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Vite
+vite.config.js.timestamp-*
+
+# Lambda deployment files
+lambda/*/contact-form-lambda.zip
+lambda/*/node_modules
+lambda/*/.env

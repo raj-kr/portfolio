@@ -58,11 +58,19 @@ export const sendContactMessage = async (
 export const testApiConnection = async (): Promise<boolean> => {
   try {
     const apiConfig = getCurrentApiConfig();
-    const url = `${apiConfig.baseUrl}/health`; // Assuming you have a health endpoint
+    const url = `${apiConfig.baseUrl}${apiConfig.contactEndpoint}`;
+
+    // Send a test message to check if the API is working
+    const testData = {
+      name: "Test User",
+      email: "test@example.com",
+      message: "This is a test message to check API connectivity.",
+    };
 
     const response = await fetch(url, {
-      method: "GET",
+      method: "POST",
       headers: getDefaultHeaders(),
+      body: JSON.stringify(testData),
     });
 
     return response.ok;

@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import ContactModal from './ContactModal';
 import { getApiConfig, testApiConnection } from '@/utils/contactApi';
 
 export default function ContactModalTest() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [apiStatus, setApiStatus] = useState<'unknown' | 'connected' | 'disconnected'>('unknown');
+  const [isTesting, setIsTesting] = useState(false);
 
-  const handleTestApi = async () => {
-    const isConnected = await testApiConnection();
-    setApiStatus(isConnected ? 'connected' : 'disconnected');
-  };
+  // Debug: Log when component renders
+  console.log('ContactModalTest rendered at:', new Date().toISOString());
+
+  const handleTestApi = useCallback(async () => {
+    if (isTesting) return; // Prevent multiple simultaneous calls
+    
+    setIsTesting(true);
+    setApiStatus('unknown');
+    
+    try {
+      const isConnected = await testApiConnection();
+      setApiStatus(isConnected ? 'connected' : 'disconnected');
+    } catch (error) {
+      console.error('Test failed:', error);
+      setApiStatus('disconnected');
+    } finally {
+      setIsTesting(false);
+    }
+  }, [isTesting]);
 
   const apiConfig = getApiConfig();
 
@@ -42,16 +58,18 @@ export default function ContactModalTest() {
         
         <button
           onClick={handleTestApi}
+          disabled={isTesting}
           style={{
             padding: '0.75rem 1.5rem',
-            backgroundColor: 'var(--secondary)',
+            backgroundColor: isTesting ? '#ccc' : 'var(--secondary)',
             color: 'white',
             border: 'none',
             borderRadius: '5px',
-            cursor: 'pointer'
+            cursor: isTesting ? 'not-allowed' : 'pointer',
+            opacity: isTesting ? 0.7 : 1
           }}
         >
-          Test API Connection
+          {isTesting ? 'Testing...' : 'Test API Connection'}
         </button>
       </div>
 
@@ -74,6 +92,12 @@ export default function ContactModalTest() {
              apiStatus === 'disconnected' ? '❌ Disconnected' : '❓ Unknown'}
           </span>
         </p>
+        
+        {isTesting && (
+          <p style={{ color: '#ff6b35', fontSize: '0.8rem', marginTop: '0.5rem' }}>
+            ⚠️ Sending test message to API...
+          </p>
+        )}
       </div>
 
       <ContactModal 
