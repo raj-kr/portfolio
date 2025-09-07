@@ -5,23 +5,27 @@
 ### **1. Deployment Scripts Updated**
 
 #### **Linux/Mac (`deploy.sh`)**
+
 - ✅ Updated default `FROM_EMAIL` to `mail@raj.kr`
 - ✅ Updated default `TO_EMAIL` to `rkgt76@gmail.com`
 - ✅ Updated default `REPLY_TO_EMAIL` to `mail@raj.kr`
 - ✅ Fixed `ROLE_ARN` to use correct Lambda role
 
 #### **Windows Git Bash (`deploy_windows.sh`)**
+
 - ✅ Updated default `FROM_EMAIL` to `mail@raj.kr`
 - ✅ Updated default `TO_EMAIL` to `rkgt76@gmail.com`
 - ✅ Updated default `REPLY_TO_EMAIL` to `mail@raj.kr`
 
 #### **Windows CMD (`deploy_windows.bat`)**
+
 - ✅ Updated default `FROM_EMAIL` to `mail@raj.kr`
 - ✅ Updated default `TO_EMAIL` to `rkgt76@gmail.com`
 - ✅ Updated default `REPLY_TO_EMAIL` to `mail@raj.kr`
 - ✅ Updated default `AWS_REGION` to `ap-south-1`
 
 #### **Windows PowerShell (`deploy_windows.ps1`)**
+
 - ✅ Updated default `FROM_EMAIL` to `mail@raj.kr`
 - ✅ Updated default `TO_EMAIL` to `rkgt76@gmail.com`
 - ✅ Updated default `REPLY_TO_EMAIL` to `mail@raj.kr`
@@ -30,6 +34,7 @@
 ### **2. Lambda Function Updated**
 
 #### **`lambda/contact-form/index.js`**
+
 - ✅ Updated default `FROM_EMAIL` to `mail@raj.kr`
 - ✅ Updated default `TO_EMAIL` to `rkgt76@gmail.com`
 - ✅ Kept `REPLY_TO_EMAIL` as user's email (for replies)
@@ -37,6 +42,7 @@
 ### **3. Documentation Updated**
 
 #### **`README.md`**
+
 - ✅ Added email configuration section
 - ✅ Updated deployment script path
 - ✅ Documented email addresses used
@@ -44,16 +50,19 @@
 ## 🎯 **Current Email Configuration**
 
 ### **Email Flow:**
-```
+
+```txt
 User fills contact form → Lambda function → SES → rkgt76@gmail.com
 ```
 
 ### **Email Addresses:**
+
 - **From Email**: `mail@raj.kr` (verified in AWS SES)
 - **To Email**: `rkgt76@gmail.com` (receives contact form submissions)
 - **Reply-To**: `mail@raj.kr` (for email replies)
 
 ### **Multiple Email Support:**
+
 - ✅ `mail@raj.kr` - Primary contact email
 - ✅ `contact@raj.kr` - Alternative contact email
 - ✅ `noreply@raj.kr` - System emails
@@ -63,6 +72,7 @@ User fills contact form → Lambda function → SES → rkgt76@gmail.com
 ## 🚀 **Deployment Commands**
 
 ### **Deploy Lambda Function:**
+
 ```bash
 # Linux/Mac
 cd lambda/contact-form
@@ -82,6 +92,7 @@ cd lambda/contact-form
 ```
 
 ### **Deploy Everything:**
+
 ```bash
 # Deploy both frontend and Lambda
 ./scripts/deploy-all.sh
