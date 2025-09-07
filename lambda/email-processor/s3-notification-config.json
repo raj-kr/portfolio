@@ -1,0 +1,19 @@
+{
+  "LambdaFunctionConfigurations": [
+    {
+      "Id": "email-processor-trigger",
+      "LambdaFunctionArn": "arn:aws:lambda:ap-south-1:016116087217:function:email-processor",
+      "Events": ["s3:ObjectCreated:*"],
+      "Filter": {
+        "Key": {
+          "FilterRules": [
+            {
+              "Name": "prefix",
+              "Value": "emails/"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

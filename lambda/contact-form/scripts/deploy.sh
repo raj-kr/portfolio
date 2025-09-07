@@ -22,7 +22,7 @@ fi
 # Get configuration from environment variables or prompt user
 FUNCTION_NAME=${FUNCTION_NAME:-"contact-form-handler"}
 AWS_REGION=${AWS_REGION:-"ap-south-1"}
-ROLE_ARN=${ROLE_ARN:-"arn:aws:iam::016116087217:user/raj"}
+ROLE_ARN=${ROLE_ARN:-"arn:aws:iam::016116087217:role/raj.kr-LambdaRole"}
 
 echo "📋 Deployment Configuration:"
 echo "  Function Name: $FUNCTION_NAME"
@@ -75,9 +75,9 @@ aws lambda update-function-configuration \
     --function-name "$FUNCTION_NAME" \
     --environment Variables="{
         AWS_REGION=$AWS_REGION,
-        FROM_EMAIL=${FROM_EMAIL:-noreply@yourdomain.com},
-        TO_EMAIL=${TO_EMAIL:-your-email@yourdomain.com},
-        REPLY_TO_EMAIL=${REPLY_TO_EMAIL:-your-email@yourdomain.com}
+        FROM_EMAIL=${FROM_EMAIL:-mail@raj.kr},
+        TO_EMAIL=${TO_EMAIL:-rkgt76@gmail.com},
+        REPLY_TO_EMAIL=${REPLY_TO_EMAIL:-mail@raj.kr}
     }" \
     --region "$AWS_REGION"
 

@@ -36,6 +36,9 @@ npm install
 # Build the deployment package (Windows compatible)
 echo "🔨 Building deployment package for Windows..."
 
+# Change to parent directory to access files
+cd ..
+
 # Check if PowerShell is available
 if command -v powershell &> /dev/null; then
     echo "Using PowerShell to create zip file..."
@@ -100,9 +103,9 @@ aws lambda update-function-configuration \
     --function-name "$FUNCTION_NAME" \
     --environment Variables="{
         AWS_REGION=$AWS_REGION,
-        FROM_EMAIL=${FROM_EMAIL:-noreply@yourdomain.com},
-        TO_EMAIL=${TO_EMAIL:-your-email@yourdomain.com},
-        REPLY_TO_EMAIL=${REPLY_TO_EMAIL:-your-email@yourdomain.com}
+        FROM_EMAIL=${FROM_EMAIL:-mail@raj.kr},
+        TO_EMAIL=${TO_EMAIL:-rkgt76@gmail.com},
+        REPLY_TO_EMAIL=${REPLY_TO_EMAIL:-mail@raj.kr}
     }" \
     --region "$AWS_REGION"
 

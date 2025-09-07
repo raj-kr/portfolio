@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 
 // Initialize AWS services
-const ses = new AWS.SES({ region: process.env.AWS_REGION || "us-east-1" });
+const ses = new AWS.SES({ region: process.env.AWS_REGION || "ap-south-1" });
 
 // CORS headers for API Gateway
 const corsHeaders = {
@@ -95,8 +95,8 @@ exports.handler = async (event, context) => {
     const sanitizedMessage = sanitizeInput(message);
 
     // Get configuration from environment variables
-    const fromEmail = process.env.FROM_EMAIL || "noreply@yourdomain.com";
-    const toEmail = process.env.TO_EMAIL || "your-email@yourdomain.com";
+    const fromEmail = process.env.FROM_EMAIL || "mail@raj.kr";
+    const toEmail = process.env.TO_EMAIL || "rkgt76@gmail.com";
     const replyToEmail = process.env.REPLY_TO_EMAIL || sanitizedEmail;
 
     // Prepare email content
@@ -108,13 +108,13 @@ exports.handler = async (event, context) => {
       ReplyToAddresses: [replyToEmail],
       Message: {
         Subject: {
-          Data: `New Contact Form Submission from ${sanitizedName}`,
+          Data: `Email from ${sanitizedName}`,
           Charset: "UTF-8",
         },
         Body: {
           Text: {
             Data: `
-New Contact Form Submission
+New Email on raj.kr site
 
 Name: ${sanitizedName}
 Email: ${sanitizedEmail}
@@ -135,7 +135,7 @@ This message was sent from your portfolio contact form.
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>New Contact Form Submission</title>
+  <title>New Email on raj.kr site</title>
   <style>
     body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -149,7 +149,7 @@ This message was sent from your portfolio contact form.
 <body>
   <div class="container">
     <div class="header">
-      <h2>New Contact Form Submission</h2>
+      <h2>New Email on raj.kr site</h2>
     </div>
     
     <div class="field">

@@ -23,7 +23,7 @@ set FUNCTION_NAME=%FUNCTION_NAME%
 if "%FUNCTION_NAME%"=="" set FUNCTION_NAME=contact-form-handler
 
 set AWS_REGION=%AWS_REGION%
-if "%AWS_REGION%"=="" set AWS_REGION=us-east-1
+if "%AWS_REGION%"=="" set AWS_REGION=ap-south-1
 
 set ROLE_ARN=%ROLE_ARN%
 
@@ -111,7 +111,7 @@ if %errorlevel% equ 0 (
 
 REM Set environment variables
 echo 🔧 Setting environment variables...
-aws lambda update-function-configuration --function-name "%FUNCTION_NAME%" --environment Variables="{AWS_REGION=%AWS_REGION%,FROM_EMAIL=%FROM_EMAIL%,TO_EMAIL=%TO_EMAIL%,REPLY_TO_EMAIL=%REPLY_TO_EMAIL%}" --region "%AWS_REGION%"
+aws lambda update-function-configuration --function-name "%FUNCTION_NAME%" --environment Variables="{AWS_REGION=%AWS_REGION%,FROM_EMAIL=mail@raj.kr,TO_EMAIL=rkgt76@gmail.com,REPLY_TO_EMAIL=mail@raj.kr}" --region "%AWS_REGION%"
 if %errorlevel% neq 0 (
     echo ❌ Failed to set environment variables
     exit /b 1

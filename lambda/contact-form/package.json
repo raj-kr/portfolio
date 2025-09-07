@@ -7,9 +7,9 @@
     "build": "zip -r contact-form-lambda.zip index.js node_modules/",
     "build:windows": "powershell -Command \"Compress-Archive -Path 'index.js', 'node_modules' -DestinationPath 'contact-form-lambda.zip' -Force\"",
     "deploy": "aws lambda update-function-code --function-name contact-form-handler --zip-file fileb://contact-form-lambda.zip",
-    "deploy:windows": "./deploy_windows.sh",
-    "deploy:windows:bat": "deploy_windows.bat",
-    "deploy:windows:ps1": "powershell -ExecutionPolicy Bypass -File deploy_windows.ps1",
+    "deploy:windows": "cd scripts && ./deploy_windows.sh",
+    "deploy:windows:bat": "cd scripts && deploy_windows.bat",
+    "deploy:windows:ps1": "cd scripts && powershell -ExecutionPolicy Bypass -File deploy_windows.ps1",
     "test": "node test.js"
   },
   "dependencies": {

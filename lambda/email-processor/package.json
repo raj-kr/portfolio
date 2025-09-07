@@ -1,0 +1,24 @@
+{
+  "name": "email-processor",
+  "version": "1.0.0",
+  "description": "Lambda function to process incoming emails and forward to Gmail",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "deploy": "zip -r email-processor.zip index.js node_modules/",
+    "deploy:windows": "powershell -Command \"Compress-Archive -Path 'index.js', 'node_modules' -DestinationPath 'email-processor.zip' -Force\""
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "mailparser": "^3.6.5"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "ses",
+    "email",
+    "forwarding"
+  ],
+  "author": "Raj Kumar",
+  "license": "MIT"
+}

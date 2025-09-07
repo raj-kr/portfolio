@@ -54,12 +54,17 @@ The portfolio includes a contact form that sends emails via AWS Lambda and SES:
    ```bash
    cd lambda/contact-form
    npm install
-   ./deploy.sh
+   ./scripts/deploy.sh
    ```
 
 2. **Set up API Gateway** (see `docs/api-setup-guide.md`)
 
 3. **Configure frontend API** (update `src/config/api.ts` with your API Gateway URL)
+
+4. **Email Configuration**:
+   - **From Email**: `mail@raj.kr` (verified in AWS SES)
+   - **To Email**: `rkgt76@gmail.com` (receives contact form submissions)
+   - **Reply-To**: `mail@raj.kr` (for email replies)
 
 ## Deployment
 

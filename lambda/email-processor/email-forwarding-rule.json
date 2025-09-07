@@ -1,0 +1,14 @@
+{
+  "Name": "forward-emails-rule",
+  "Enabled": true,
+  "TlsPolicy": "Optional",
+  "Recipients": ["raj.kr"],
+  "Actions": [
+    {
+      "S3Action": {
+        "BucketName": "myemail-log",
+        "ObjectKeyPrefix": "emails/"
+      }
+    }
+  ]
+}

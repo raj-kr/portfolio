@@ -1,0 +1,33 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowSESPuts",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ses.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::myemail-log/*",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:ses:ap-south-1:016116087217:receipt-rule-set/email-storage-ruleset"
+        }
+      }
+    },
+    {
+      "Sid": "AllowSESToVerifyBucket",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ses.amazonaws.com"
+      },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::myemail-log",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:ses:ap-south-1:016116087217:receipt-rule-set/email-storage-ruleset"
+        }
+      }
+    }
+  ]
+}

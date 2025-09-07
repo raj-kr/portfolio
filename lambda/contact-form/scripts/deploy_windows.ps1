@@ -3,11 +3,11 @@
 
 param(
     [string]$FunctionName = "contact-form-handler",
-    [string]$AwsRegion = "us-east-1",
+    [string]$AwsRegion = "ap-south-1",
     [string]$RoleArn = "",
-    [string]$FromEmail = "noreply@yourdomain.com",
-    [string]$ToEmail = "your-email@yourdomain.com",
-    [string]$ReplyToEmail = "your-email@yourdomain.com"
+    [string]$FromEmail = "mail@raj.kr",
+    [string]$ToEmail = "rkgt76@gmail.com",
+    [string]$ReplyToEmail = "mail@raj.kr"
 )
 
 Write-Host "🚀 Starting Contact Form Lambda Deployment (Windows PowerShell)..." -ForegroundColor Green
