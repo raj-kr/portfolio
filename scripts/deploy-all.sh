@@ -94,14 +94,16 @@ if [ "$DEPLOY_LAMBDA" = true ]; then
     fi
     
     # Deploy Lambda
-    if [ -f "deploy.sh" ]; then
-        ./deploy.sh
+    if [ -f "scripts/deploy.sh" ]; then
+        ./scripts/deploy.sh
         print_success "Lambda function deployed successfully!"
     else
         print_error "deploy.sh not found in lambda/contact-form directory"
         exit 1
     fi
     
+    cd ../email-processor
+    ./deploy.sh
     cd ../..
 fi
 

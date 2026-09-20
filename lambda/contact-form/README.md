@@ -2,6 +2,10 @@
 
 This Lambda function handles contact form submissions from your portfolio website and sends emails via AWS SES.
 
+Current deployment and testing instructions are in [email-fixes.md](../../docs/email-fixes.md).
+The handler now uses AWS SDK v3 and Node.js 22. `REPLY_TO_EMAIL` is ignored;
+replies always go to the visitor. `npm test` uses mocked clients and sends no email.
+
 ## 📁 Project Structure
 
 ```

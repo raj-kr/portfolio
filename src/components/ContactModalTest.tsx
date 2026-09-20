@@ -95,7 +95,7 @@ export default function ContactModalTest() {
         
         {isTesting && (
           <p style={{ color: '#ff6b35', fontSize: '0.8rem', marginTop: '0.5rem' }}>
-            ⚠️ Sending test message to API...
+            Checking API reachability; no message is sent.
           </p>
         )}
       </div>

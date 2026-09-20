@@ -11,16 +11,19 @@ interface FormData {
   name: string;
   email: string;
   message: string;
+  website: string;
 }
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    website: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitError, setSubmitError] = useState('');
   const { trackButtonClick, trackFormSubmission } = useAnalytics();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -33,8 +36,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setSubmitError('');
 
     try {
       // Track form submission
@@ -46,7 +51,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
       if (result.success) {
         setSubmitStatus('success');
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', message: '', website: '' });
         
         // Close modal after 2 seconds on success
         setTimeout(() => {
@@ -55,10 +60,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         }, 2000);
       } else {
         setSubmitStatus('error');
-        console.error('API Error:', result.error);
+        setSubmitError(import.meta.env.DEV ? result.error || 'Unable to send your message.' : 'Unable to send your message. Please try again later.');
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      setSubmitError('Unable to send your message. Please try again later.');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -161,6 +166,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
+          <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: '1px', height: '1px', overflow: 'hidden' }}>
+            <label htmlFor="contact-website">Leave this field empty</label>
+            <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" value={formData.website} onChange={handleInputChange} />
+          </div>
           {/* Name Input */}
           <div style={{ marginBottom: '1.5rem' }}>
             <label 
@@ -178,6 +187,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               type="text"
               id="name"
               name="name"
+              maxLength={100}
               value={formData.name}
               onChange={handleInputChange}
               required
@@ -216,6 +226,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               type="email"
               id="email"
               name="email"
+              maxLength={254}
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -253,6 +264,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <textarea
               id="message"
               name="message"
+              maxLength={5000}
               value={formData.message}
               onChange={handleInputChange}
               required
@@ -355,7 +367,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               textAlign: 'center',
               fontSize: '0.9rem'
             }}>
-              ❌ Failed to send message. Please try again or contact me directly.
+              {submitError || 'Unable to send your message. Please try again later.'}
             </div>
           )}
         </form>

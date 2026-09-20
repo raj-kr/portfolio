@@ -1,0 +1,20 @@
+name: Email regression checks
+
+on: [push, pull_request]
+
+jobs:
+  email:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [contact-form, email-processor]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: lambda/${{ matrix.service }}
+      - run: npm test
+        working-directory: lambda/${{ matrix.service }}
+      - run: node --test scripts/email-deployment.test.js

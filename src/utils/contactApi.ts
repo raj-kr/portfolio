@@ -5,6 +5,7 @@ interface ContactFormData {
   name: string;
   email: string;
   message: string;
+  website?: string;
 }
 
 interface ContactApiResponse {
@@ -23,12 +24,16 @@ export const sendContactMessage = async (
 ): Promise<ContactApiResponse> => {
   try {
     const apiConfig = getCurrentApiConfig();
+    if (!apiConfig.baseUrl) {
+      return { success: false, error: 'Contact sending is disabled in local development. Configure a test API first.' };
+    }
     const url = `${apiConfig.baseUrl}${apiConfig.contactEndpoint}`;
 
     const response = await fetch(url, {
       method: "POST",
       headers: getDefaultHeaders(),
       body: JSON.stringify(formData),
+      signal: AbortSignal.timeout(30000),
     });
 
     if (!response.ok) {
@@ -36,14 +41,15 @@ export const sendContactMessage = async (
     }
 
     const data = await response.json();
+    if (data?.success !== true) {
+      return { success: false, error: 'The server did not confirm your message. Please try again.' };
+    }
 
     return {
       success: true,
       message: data.message || "Message sent successfully!",
     };
   } catch (error) {
-    console.error("Error sending contact message:", error);
-
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to send message",
@@ -58,19 +64,14 @@ export const sendContactMessage = async (
 export const testApiConnection = async (): Promise<boolean> => {
   try {
     const apiConfig = getCurrentApiConfig();
+    if (!apiConfig.baseUrl) return false;
     const url = `${apiConfig.baseUrl}${apiConfig.contactEndpoint}`;
 
-    // Send a test message to check if the API is working
-    const testData = {
-      name: "Test User",
-      email: "test@example.com",
-      message: "This is a test message to check API connectivity.",
-    };
-
+    // Check reachability only. OPTIONS never submits a form or sends an email.
     const response = await fetch(url, {
-      method: "POST",
+      method: "OPTIONS",
       headers: getDefaultHeaders(),
-      body: JSON.stringify(testData),
+      signal: AbortSignal.timeout(10000),
     });
 
     return response.ok;
@@ -93,66 +94,3 @@ export const getApiConfig = () => {
     environment: import.meta.env.MODE,
   };
 };
-
-// Example Lambda function structure for reference:
-/*
-// AWS Lambda function (Node.js)
-exports.handler = async (event) => {
-  try {
-    // Parse the request body
-    const { name, email, message } = JSON.parse(event.body);
-    
-    // Validate required fields
-    if (!name || !email || !message) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS'
-        },
-        body: JSON.stringify({
-          success: false,
-          error: 'Missing required fields'
-        })
-      };
-    }
-    
-    // Process the contact form (send email, save to database, etc.)
-    // Example: Send email using SES
-    // await sendEmail({ name, email, message });
-    
-    // Return success response
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS'
-      },
-      body: JSON.stringify({
-        success: true,
-        message: 'Message sent successfully!'
-      })
-    };
-  } catch (error) {
-    console.error('Error processing contact form:', error);
-    
-    return {
-      statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS'
-      },
-      body: JSON.stringify({
-        success: false,
-        error: 'Internal server error'
-      })
-    };
-  }
-};
-*/

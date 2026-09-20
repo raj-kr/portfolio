@@ -3,7 +3,8 @@
 # Email Processor Lambda Deployment Script
 # This script builds and deploys the email processor Lambda function
 
-set -e  # Exit on any error
+set -e
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 echo "🚀 Starting Email Processor Lambda Deployment..."
 
@@ -31,28 +32,11 @@ echo "  Role ARN: $ROLE_ARN"
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-npm install
+npm ci
+npm test
 
-# Build the deployment package
-echo "🔨 Building deployment package..."
-
-# Check if PowerShell is available
-if command -v powershell &> /dev/null; then
-    echo "Using PowerShell to create zip file..."
-    powershell -Command "Compress-Archive -Path 'index.js', 'node_modules' -DestinationPath 'email-processor.zip' -Force"
-elif command -v 7z &> /dev/null; then
-    echo "Using 7-Zip to create zip file..."
-    7z a -tzip email-processor.zip index.js node_modules/
-elif command -v tar &> /dev/null; then
-    echo "Using tar to create zip file..."
-    tar -a -cf email-processor.zip index.js node_modules/
-else
-    echo "❌ No zip utility found. Please install one of:"
-    echo "  - PowerShell (built-in on Windows 10+)"
-    echo "  - 7-Zip (https://www.7-zip.org/)"
-    echo "  - Git Bash (includes tar)"
-    exit 1
-fi
+# Build a fresh ZIP on Windows or Linux.
+npm run build
 
 # Check if function exists
 if aws lambda get-function --function-name "$FUNCTION_NAME" --region "$AWS_REGION" &> /dev/null; then
@@ -68,7 +52,7 @@ else
     
     aws lambda create-function \
         --function-name "$FUNCTION_NAME" \
-        --runtime nodejs18.x \
+        --runtime nodejs22.x \
         --role "$ROLE_ARN" \
         --handler index.handler \
         --zip-file fileb://email-processor.zip \
@@ -80,18 +64,8 @@ else
     echo "✅ Function created successfully!"
 fi
 
-# Set environment variables
-echo "🔧 Setting environment variables..."
-aws lambda update-function-configuration \
-    --function-name "$FUNCTION_NAME" \
-    --environment Variables="{
-        AWS_REGION=$AWS_REGION,
-        FROM_EMAIL=mail@raj.kr,
-        TO_EMAIL=rkgt76@gmail.com
-    }" \
-    --region "$AWS_REGION"
-
-echo "✅ Environment variables set!"
+# Preserve existing settings, remove reserved variables, and wait for updates.
+node ../configure-function.mjs "$FUNCTION_NAME" "$AWS_REGION" "--from=${FROM_EMAIL:-}" "--to=${TO_EMAIL:-}"
 
 # Add S3 trigger permissions
 echo "🔐 Setting up S3 trigger permissions..."

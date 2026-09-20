@@ -48,6 +48,9 @@ yarn dev
 
 ### Contact Form Setup
 
+See [email fixes and deployment](docs/email-fixes.md) for the current Node.js 22
+deployment steps, offline tests, and local-development API configuration.
+
 The portfolio includes a contact form that sends emails via AWS Lambda and SES:
 
 1. **Deploy Lambda function**:
@@ -65,7 +68,7 @@ The portfolio includes a contact form that sends emails via AWS Lambda and SES:
 4. **Email Configuration**:
    - **From Email**: `mail@raj.kr` (verified in AWS SES)
    - **To Email**: `rkgt76@gmail.com` (receives contact form submissions)
-   - **Reply-To**: `mail@raj.kr` (for email replies)
+   - **Reply-To**: The visitor's validated email address
 
 ## Deployment
 

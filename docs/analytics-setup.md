@@ -30,6 +30,7 @@ Replace `G-XXXXXXXXXX` with your actual Google Analytics Measurement ID.
 ## Features Included
 
 ### Automatic Tracking
+
 - **Page Views**: Automatically tracks all page navigation
 - **Scroll Depth**: Tracks when users scroll 25%, 50%, 75%, and 100%
 - **Time on Page**: Tracks how long users spend on each page

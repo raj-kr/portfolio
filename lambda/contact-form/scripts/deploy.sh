@@ -3,7 +3,8 @@
 # Contact Form Lambda Deployment Script
 # This script builds and deploys the Lambda function to AWS
 
-set -e  # Exit on any error
+set -e
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 echo "🚀 Starting Contact Form Lambda Deployment..."
 
@@ -31,7 +32,8 @@ echo "  Role ARN: $ROLE_ARN"
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-npm install
+npm ci
+npm test
 
 # Build the deployment package
 echo "🔨 Building deployment package..."
@@ -57,7 +59,7 @@ else
     
     aws lambda create-function \
         --function-name "$FUNCTION_NAME" \
-        --runtime nodejs18.x \
+        --runtime nodejs22.x \
         --role "$ROLE_ARN" \
         --handler index.handler \
         --zip-file fileb://contact-form-lambda.zip \
@@ -69,23 +71,9 @@ else
     echo "✅ Function created successfully!"
 fi
 
-# Set environment variables
-echo "🔧 Setting environment variables..."
-aws lambda update-function-configuration \
-    --function-name "$FUNCTION_NAME" \
-    --environment Variables="{
-        AWS_REGION=$AWS_REGION,
-        FROM_EMAIL=${FROM_EMAIL:-mail@raj.kr},
-        TO_EMAIL=${TO_EMAIL:-rkgt76@gmail.com},
-        REPLY_TO_EMAIL=${REPLY_TO_EMAIL:-mail@raj.kr}
-    }" \
-    --region "$AWS_REGION"
+# Preserve existing settings, remove reserved variables, and wait for updates.
+node ../configure-function.mjs "$FUNCTION_NAME" "$AWS_REGION" "--from=${FROM_EMAIL:-}" "--to=${TO_EMAIL:-}"
 
-echo "✅ Environment variables set!"
-
-# Test the function
-echo "🧪 Testing the deployed function..."
-node test.js
 
 echo "🎉 Deployment completed successfully!"
 echo ""

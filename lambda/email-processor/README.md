@@ -2,6 +2,11 @@
 
 This Lambda function processes incoming emails stored in S3 and forwards them to Gmail with proper headers to avoid SPF/DMARC issues.
 
+See [email-fixes.md](../../docs/email-fixes.md) for current deployment instructions.
+The handler now uses AWS SDK v3, Node.js 22, and MIME forwarding that retains
+attachments and inline images. `npm test` uses mocked clients and sends no email.
+Failed forwards throw for Lambda retries; configure an on-failure destination in AWS.
+
 ## How It Works
 
 1. **Email Reception**: Emails sent to any `@raj.kr` address are received by AWS SES

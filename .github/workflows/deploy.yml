@@ -26,7 +26,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Install dependencies
         run: npm ci
@@ -35,6 +35,10 @@ jobs:
         run: npm run build
         env:
           VITE_GA_ID: ${{ secrets.VITE_GA_ID }}
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+
+      - name: Test contact API behavior
+        run: node --test scripts/contact-api.test.js
 
       - name: Test SPA hosting configuration
         run: node --test scripts/spa-hosting.test.js

@@ -3,7 +3,8 @@
 # Contact Form Lambda Deployment Script for Windows
 # This script builds and deploys the Lambda function to AWS on Windows
 
-set -e  # Exit on any error
+set -e
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 echo "🚀 Starting Contact Form Lambda Deployment (Windows)..."
 
@@ -31,39 +32,11 @@ echo "  Role ARN: $ROLE_ARN"
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-npm install
+npm ci
+npm test
 
-# Build the deployment package (Windows compatible)
-echo "🔨 Building deployment package for Windows..."
-
-# Change to parent directory to access files
-cd ..
-
-# Check if PowerShell is available
-if command -v powershell &> /dev/null; then
-    echo "Using PowerShell to create zip file..."
-    powershell -Command "Compress-Archive -Path 'index.js', 'node_modules' -DestinationPath 'contact-form-lambda.zip' -Force"
-elif command -v 7z &> /dev/null; then
-    echo "Using 7-Zip to create zip file..."
-    7z a -tzip contact-form-lambda.zip index.js node_modules/
-elif command -v tar &> /dev/null; then
-    echo "Using tar to create zip file..."
-    tar -a -cf contact-form-lambda.zip index.js node_modules/
-else
-    echo "❌ No zip utility found. Please install one of:"
-    echo "  - PowerShell (built-in on Windows 10+)"
-    echo "  - 7-Zip (https://www.7-zip.org/)"
-    echo "  - Git Bash (includes tar)"
-    exit 1
-fi
-
-# Verify zip file was created
-if [ ! -f "contact-form-lambda.zip" ]; then
-    echo "❌ Failed to create zip file"
-    exit 1
-fi
-
-echo "✅ Zip file created successfully: contact-form-lambda.zip"
+# Build a fresh ZIP on Windows or Linux.
+npm run build
 
 # Check if function exists
 if aws lambda get-function --function-name "$FUNCTION_NAME" --region "$AWS_REGION" &> /dev/null; then
@@ -85,7 +58,7 @@ else
     
     aws lambda create-function \
         --function-name "$FUNCTION_NAME" \
-        --runtime nodejs18.x \
+        --runtime nodejs22.x \
         --role "$ROLE_ARN" \
         --handler index.handler \
         --zip-file fileb://contact-form-lambda.zip \
@@ -97,23 +70,9 @@ else
     echo "✅ Function created successfully!"
 fi
 
-# Set environment variables
-echo "🔧 Setting environment variables..."
-aws lambda update-function-configuration \
-    --function-name "$FUNCTION_NAME" \
-    --environment Variables="{
-        AWS_REGION=$AWS_REGION,
-        FROM_EMAIL=${FROM_EMAIL:-mail@raj.kr},
-        TO_EMAIL=${TO_EMAIL:-rkgt76@gmail.com},
-        REPLY_TO_EMAIL=${REPLY_TO_EMAIL:-mail@raj.kr}
-    }" \
-    --region "$AWS_REGION"
+# Preserve existing settings, remove reserved variables, and wait for updates.
+node ../configure-function.mjs "$FUNCTION_NAME" "$AWS_REGION" "--from=${FROM_EMAIL:-}" "--to=${TO_EMAIL:-}"
 
-echo "✅ Environment variables set!"
-
-# Test the function
-echo "🧪 Testing the deployed function..."
-node test.js
 
 echo "🎉 Deployment completed successfully!"
 echo ""

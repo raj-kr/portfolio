@@ -4,7 +4,7 @@ This guide shows how to set up AWS API Gateway and Lambda to handle contact form
 
 ## 🏗️ Architecture Overview
 
-```
+```txt
 React App → API Gateway → Lambda Function → Email Service (SES) / Database
 ```
 

@@ -1,5 +1,5 @@
-// API Configuration
-// Update these settings with your actual API Gateway details
+// Development sends are disabled until a test API is explicitly configured.
+const developmentBaseUrl = import.meta.env.VITE_CONTACT_API_BASE_URL?.trim().replace(/\/$/, '') || '';
 
 export const API_CONFIG = {
   // Production API Gateway URL
@@ -10,13 +10,13 @@ export const API_CONFIG = {
 
   // Development/Staging API Gateway URL
   development: {
-    baseUrl: "https://kxoak0t3ik.execute-api.ap-south-1.amazonaws.com/prod",
+    baseUrl: developmentBaseUrl,
     contactEndpoint: "/contact",
   },
 
   // Local development (if you have a local API server)
   local: {
-    baseUrl: "https://kxoak0t3ik.execute-api.ap-south-1.amazonaws.com/prod",
+    baseUrl: developmentBaseUrl,
     contactEndpoint: "/contact",
   },
 };
