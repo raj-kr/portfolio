@@ -10,7 +10,6 @@ export default function GoogleAnalyticsComponent({ gaId }: GoogleAnalyticsProps)
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-    document.head.appendChild(script);
 
     // Initialize gtag
     window.dataLayer = window.dataLayer || [];
@@ -21,6 +20,7 @@ export default function GoogleAnalyticsComponent({ gaId }: GoogleAnalyticsProps)
 
     gtag('js', new Date());
     gtag('config', gaId);
+    document.head.appendChild(script);
 
     return () => {
       // Cleanup script on unmount
@@ -38,6 +38,6 @@ export default function GoogleAnalyticsComponent({ gaId }: GoogleAnalyticsProps)
 declare global {
   interface Window {
     dataLayer: any[];
-    gtag: (...args: any[]) => void;
+    gtag?: (...args: unknown[]) => void;
   }
 }

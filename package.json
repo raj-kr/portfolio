@@ -10,6 +10,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "validate:analytics": "node scripts/validate-analytics.js",
     "test:analytics": "node scripts/test-analytics.js",
+    "test:analytics:unit": "node --test scripts/analytics.test.js",
     "test:analytics:production": "node scripts/test-production-analytics.js"
   },
   "dependencies": {

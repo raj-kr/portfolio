@@ -7,12 +7,12 @@ import { GA_ID, isGAEnabled } from './config/analytics';
 function App() {
   return (
     <Router>
+      {isGAEnabled && <GoogleAnalyticsComponent gaId={GA_ID} />}
       <Layout>
         <Routes>
           <Route path="/" element={<Maintenance />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        {isGAEnabled && <GoogleAnalyticsComponent gaId={GA_ID} />}
       </Layout>
     </Router>
   );

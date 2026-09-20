@@ -3,7 +3,7 @@ import { GA_ID, isGAEnabled } from "@/config/analytics";
 
 // Track page views
 export const trackPageView = (url: string) => {
-  if (!isGAEnabled || typeof window === "undefined") return;
+  if (!isGAEnabled || typeof window === "undefined" || typeof window.gtag !== "function") return;
 
   window.gtag("config", GA_ID, {
     page_path: url,
@@ -17,7 +17,7 @@ export const trackEvent = (
   label?: string,
   value?: number
 ) => {
-  if (!isGAEnabled || typeof window === "undefined") return;
+  if (!isGAEnabled || typeof window === "undefined" || typeof window.gtag !== "function") return;
 
   const config: Record<string, string | number | boolean> = {
     event_category: category,
@@ -70,6 +70,6 @@ export const trackTimeOnPage = (seconds: number) => {
 // Declare gtag for TypeScript
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
+    gtag?: (...args: unknown[]) => void;
   }
 }
