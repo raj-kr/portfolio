@@ -1,6 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './pages/Home';
+import Maintenance from './pages/Maintenance';
 import GoogleAnalyticsComponent from './components/GoogleAnalytics';
 import { GA_ID, isGAEnabled } from './config/analytics';
 
@@ -9,7 +9,8 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Maintenance />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         {isGAEnabled && <GoogleAnalyticsComponent gaId={GA_ID} />}
       </Layout>
