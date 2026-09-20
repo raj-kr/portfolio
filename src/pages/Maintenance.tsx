@@ -22,7 +22,7 @@ export default function Maintenance() {
           <div className="maintenance-icon" aria-hidden="true">
             <FiTool />
           </div>
-          <p className="maintenance-eyebrow">RAJ KUMAR <br/>(Software Engineer)</p>
+          <p className="maintenance-eyebrow">RAJ KUMAR <br/> (Software Engineer)</p>
           <h1 id="maintenance-title">Site under maintenance</h1>
           <p className="maintenance-description">
             I’m updating my portfolio. Thanks for your patience while I get

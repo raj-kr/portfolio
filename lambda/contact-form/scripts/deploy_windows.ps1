@@ -6,7 +6,7 @@ param(
     [string]$AwsRegion = "ap-south-1",
     [string]$RoleArn = "",
     [string]$FromEmail = "",
-    [string]$ToEmail = ""
+    [string]$ToEmail = "mail@raj.kr"
 )
 
 $ErrorActionPreference = "Stop"
@@ -89,7 +89,8 @@ if ($functionExists) {
     Write-Host " Function created successfully!" -ForegroundColor Green
 }
 
-# Preserve existing settings and wait for the code update before configuration.
+# Migrate the recipient to Workspace while preserving unrelated settings.
+if ([string]::IsNullOrWhiteSpace($ToEmail)) { $ToEmail = "mail@raj.kr" }
 node ../configure-function.mjs $FunctionName $AwsRegion "--from=$FromEmail" "--to=$ToEmail"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 

@@ -14,6 +14,15 @@ function setup(env = {}) {
 }
 const event = body => ({ httpMethod: 'POST', body: JSON.stringify(body) });
 
+test('delivers to the Workspace mailbox by default and lets its owner reply to the visitor', async () => {
+  const { handler, sent } = setup();
+  assert.equal((await handler(event(valid))).statusCode, 200);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].Source, 'mail@raj.kr');
+  assert.deepEqual(sent[0].Destination.ToAddresses, ['mail@raj.kr']);
+  assert.deepEqual(sent[0].ReplyToAddresses, [valid.email]);
+});
+
 test('sends from the configured identity and replies to the visitor despite a legacy override', async () => {
   const { handler, sent, logs } = setup({ FROM_EMAIL: 'mail@raj.kr', TO_EMAIL: 'owner@example.com', REPLY_TO_EMAIL: 'mail@raj.kr' });
   assert.equal((await handler(event(valid))).statusCode, 200);

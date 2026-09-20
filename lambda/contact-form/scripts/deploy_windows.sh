@@ -71,7 +71,8 @@ else
 fi
 
 # Preserve existing settings, remove reserved variables, and wait for updates.
-node ../configure-function.mjs "$FUNCTION_NAME" "$AWS_REGION" "--from=${FROM_EMAIL:-}" "--to=${TO_EMAIL:-}"
+# Explicitly replace the old personal Gmail recipient with the Workspace mailbox.
+node ../configure-function.mjs "$FUNCTION_NAME" "$AWS_REGION" "--from=${FROM_EMAIL:-}" "--to=${TO_EMAIL:-mail@raj.kr}"
 
 
 echo "🎉 Deployment completed successfully!"

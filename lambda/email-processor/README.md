@@ -1,5 +1,10 @@
 # Email Processor Lambda Function
 
+**Legacy service:** Google Workspace now receives mail for `raj.kr` directly.
+This forwarder is no longer included in `scripts/deploy-all.sh` and is not needed
+for the contact form. Do not rerun its setup scripts for the Workspace setup.
+Existing AWS resources and archived messages have not been deleted.
+
 This Lambda function processes incoming emails stored in S3 and forwards them to Gmail with proper headers to avoid SPF/DMARC issues.
 
 See [email-fixes.md](../../docs/email-fixes.md) for current deployment instructions.

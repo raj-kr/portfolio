@@ -67,7 +67,7 @@ The portfolio includes a contact form that sends emails via AWS Lambda and SES:
 
 4. **Email Configuration**:
    - **From Email**: `mail@raj.kr` (verified in AWS SES)
-   - **To Email**: `rkgt76@gmail.com` (receives contact form submissions)
+   - **To Email**: `mail@raj.kr` (receives contact form submissions in Google Workspace)
    - **Reply-To**: The visitor's validated email address
 
 ## Deployment

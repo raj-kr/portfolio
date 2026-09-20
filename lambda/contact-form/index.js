@@ -53,7 +53,7 @@ function createHandler({ client = ses, env = process.env, logger = console } = {
     try {
       const result = await client.send(new SendEmailCommand({
         Source: env.FROM_EMAIL || 'mail@raj.kr',
-        Destination: { ToAddresses: [env.TO_EMAIL || 'rkgt76@gmail.com'] },
+        Destination: { ToAddresses: [env.TO_EMAIL || 'mail@raj.kr'] },
         // Ignore the legacy REPLY_TO_EMAIL override: replies belong to the visitor.
         ReplyToAddresses: [email],
         Message: {

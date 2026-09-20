@@ -1,5 +1,28 @@
 # Email fixes and deployment
 
+## Google Workspace setup
+
+Contact submissions follow this route:
+
+`Contact modal -> API Gateway -> contact-form-handler -> AWS SES -> mail@raj.kr (Google Workspace)`
+
+SES continues sending notifications from `mail@raj.kr`. The recipient is now
+`mail@raj.kr`, and Reply-To is the visitor's validated email address, so replying
+in Gmail reaches the visitor. No Gmail password or SMTP credentials are needed.
+The existing frontend API endpoint and contact modal need no changes.
+
+Keep Google's MX records for incoming mail. Keep the SES domain verification
+and DKIM DNS records alongside Google's DKIM records: the website still sends
+through SES. With DMARC enabled, SES mail must pass an aligned DKIM or SPF check;
+adding SES to the root SPF record alone does not guarantee alignment when using
+SES's default MAIL FROM domain. See [SES DMARC authentication](https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-dmarc.html).
+
+The old SES/S3 `email-processor` forwarder is no longer part of the normal
+deployment. Do not rerun the legacy forwarding setup scripts or replace Google's
+MX records with SES receiving records. Existing AWS resources and stored emails
+are retained; after verifying Workspace delivery and DNS propagation, the old
+receipt rules and forwarding triggers can be retired separately.
+
 Both Lambda services now use the AWS SDK for JavaScript v3. Deployment scripts
 create and update functions on Node.js 22, preserve unrelated environment
 variables, remove the reserved `AWS_REGION` entry and obsolete `REPLY_TO_EMAIL`
@@ -47,12 +70,11 @@ credentials. The existing frontend workflow also tests contact API behavior.
 
 ## Deploy
 
-Frontend deployment alone does **not** update either Lambda. With AWS credentials
+Frontend deployment alone does **not** update the contact Lambda. With AWS credentials
 configured, run from the repository root in Bash / Git Bash:
 
 ```sh
 bash lambda/contact-form/scripts/deploy.sh
-bash lambda/email-processor/deploy.sh
 ```
 
 For the contact Lambda, native PowerShell is also supported:
@@ -62,15 +84,38 @@ For the contact Lambda, native PowerShell is also supported:
 ```
 
 Scripts build fresh ZIPs, deploy code, and update runtime/configuration. They run
-offline tests before deployment. Existing From/To settings are retained; use
-`FROM_EMAIL` and `TO_EMAIL` (PowerShell: `-FromEmail` and `-ToEmail`) to override.
+offline tests before deployment. Contact deployment explicitly sets `TO_EMAIL`
+to `mail@raj.kr`, replacing the old personal Gmail destination even on existing
+functions. The existing From address and unrelated settings are retained; the
+default From address is `mail@raj.kr`. Use `FROM_EMAIL` and `TO_EMAIL` (PowerShell:
+`-FromEmail` and `-ToEmail`) for deliberate overrides. Clear any old `TO_EMAIL`
+shell variable or set it to `mail@raj.kr` before using Bash or Command Prompt.
 The Lambda roles need `ses:SendEmail` for the contact function and
 `s3:GetObject` plus `ses:SendRawEmail` for forwarding. If S3 versioning is enabled,
 the forwarder reads the event's version and also needs `s3:GetObjectVersion`.
 The checked-in SES policy already includes both sending actions.
 
-After the Lambdas, deploy the frontend through the existing GitHub workflow.
-No live email has been sent or infrastructure changed as part of these fixes.
+The Workspace recipient change requires only the contact Lambda deployment.
+Future frontend changes use the existing GitHub workflow.
+The contact Lambda migration has been deployed: Node.js 22, From/To
+`mail@raj.kr`, and the obsolete reply override removed. The deployed package
+hash matches the local ZIP; both the live Lambda and public API passed OPTIONS
+checks. SES reports the domain verified, DKIM successful, and sending enabled.
+No test email was sent, so final Workspace inbox delivery remains unverified.
+
+To update only the recipient on an already deployed, current contact Lambda,
+run this from the repository root with AWS credentials configured:
+
+```sh
+node lambda/configure-function.mjs contact-form-handler ap-south-1 --from=mail@raj.kr --to=mail@raj.kr
+```
+
+This preserves unrelated environment variables, removes the obsolete reply
+override, and sets the runtime to Node.js 22. Use the full deployment command
+above if the deployed code is older. Confirm afterward that Lambda's `TO_EMAIL`
+is `mail@raj.kr` and SES has the domain identity verified with DKIM enabled in
+`ap-south-1`. A successful API response confirms SES acceptance; check the
+Workspace inbox and spam folder to verify final delivery of a test submission.
 
 ## AWS checks still required
 

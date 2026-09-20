@@ -28,6 +28,9 @@ if "%AWS_REGION%"=="" set AWS_REGION=ap-south-1
 
 set ROLE_ARN=%ROLE_ARN%
 
+REM Replace the old personal Gmail recipient unless explicitly overridden.
+if "%TO_EMAIL%"=="" set "TO_EMAIL=mail@raj.kr"
+
 echo  Deployment Configuration:
 echo   Function Name: %FUNCTION_NAME%
 echo   AWS Region: %AWS_REGION%

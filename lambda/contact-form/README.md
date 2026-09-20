@@ -1,327 +1,66 @@
-# Contact Form Lambda Function
+﻿# Contact Form Lambda
 
-This Lambda function handles contact form submissions from your portfolio website and sends emails via AWS SES.
+The contact modal posts to API Gateway, which invokes this Node.js 22 Lambda.
+AWS SES sends a notification to `mail@raj.kr`, received in Google Workspace.
+Replying in Gmail addresses the visitor who submitted the form.
 
-Current deployment and testing instructions are in [email-fixes.md](../../docs/email-fixes.md).
-The handler now uses AWS SDK v3 and Node.js 22. `REPLY_TO_EMAIL` is ignored;
-replies always go to the visitor. `npm test` uses mocked clients and sends no email.
+## Deployment
 
-## 📁 Project Structure
+From the repository root, with Node.js 22+ and AWS CLI credentials configured:
 
-```
-lambda/contact-form/
-├── index.js              # Main Lambda handler
-├── package.json          # Dependencies and scripts
-├── test.js              # Local testing script
-├── deploy.sh            # Deployment script
-├── README.md            # This file
-└── contact-form-lambda.zip # Built deployment package (generated)
-```
-
-## 🚀 Quick Start
-
-### 1. Install Dependencies
-
-```bash
-cd lambda/contact-form
-npm install
-```
-
-### Windows-Specific Notes
-
-If you're on Windows, you have multiple deployment options:
-
-1. **Git Bash** (Recommended): Use `./deploy_windows.sh`
-2. **Command Prompt**: Use `deploy_windows.bat`
-3. **PowerShell**: Use `.\deploy_windows.ps1`
-
-All scripts handle Windows-specific zip creation using PowerShell's `Compress-Archive` cmdlet.
-
-### 2. Configure Environment Variables
-
-Set these environment variables before deployment:
-
-```bash
-export FUNCTION_NAME="contact-form-handler"
-export AWS_REGION="us-east-1"
-export ROLE_ARN="arn:aws:iam::YOUR_ACCOUNT_ID:role/lambda-execution-role"
-export FROM_EMAIL="noreply@yourdomain.com"
-export TO_EMAIL="your-email@yourdomain.com"
-export REPLY_TO_EMAIL="your-email@yourdomain.com"
-```
-
-### 3. Deploy to AWS
-
-**Linux/Mac:**
-```bash
-./deploy.sh
-```
-
-**Windows (Git Bash):**
-```bash
-./deploy_windows.sh
-```
-
-**Windows (Command Prompt):**
-```cmd
-deploy_windows.bat
-```
-
-**Windows (PowerShell):**
 ```powershell
-.\deploy_windows.ps1
-# Or with parameters:
-.\deploy_windows.ps1 -FunctionName "contact-form-handler" -AwsRegion "ap-south-1" -RoleArn "arn:aws:iam::YOUR_ACCOUNT_ID:role/lambda-execution-role"
+.\lambda\contact-form\scripts\deploy_windows.ps1
 ```
 
-**Using npm scripts:**
-```bash
-# Linux/Mac
-npm run build && npm run deploy
+Or in Bash / Git Bash:
 
-# Windows (Git Bash)
-npm run build:windows && npm run deploy:windows
-
-# Windows (Command Prompt)
-npm run build:windows && npm run deploy:windows:bat
-
-# Windows (PowerShell)
-npm run build:windows && npm run deploy:windows:ps1
+```sh
+bash lambda/contact-form/scripts/deploy.sh
 ```
 
-**Manual deployment:**
-```bash
-# Linux/Mac
-npm run build
-aws lambda update-function-code --function-name contact-form-handler --zip-file fileb://contact-form-lambda.zip
+These scripts install dependencies, run mocked tests, package the Lambda, deploy
+its code, and update its runtime and email settings. Frontend deployment does
+not deploy the Lambda. See [email deployment](../../docs/email-fixes.md) for the
+Workspace migration and DNS requirements.
 
-# Windows
-npm run build:windows
-aws lambda update-function-code --function-name contact-form-handler --zip-file fileb://contact-form-lambda.zip
+## Configuration
+
+| Setting | Behavior |
+| --- | --- |
+| Function | `contact-form-handler` by default |
+| Region | `ap-south-1` by default; Lambda supplies `AWS_REGION` |
+| `FROM_EMAIL` | Defaults to `mail@raj.kr`; deployment preserves an existing sender unless overridden |
+| `TO_EMAIL` | Defaults to `mail@raj.kr`; contact deployment replaces the old recipient with this address |
+| Reply-To | Validated visitor email; the legacy `REPLY_TO_EMAIL` variable is ignored and removed during deployment |
+
+Bash / Command Prompt accept `FROM_EMAIL` and `TO_EMAIL` environment overrides.
+PowerShell accepts `-FromEmail` and `-ToEmail`. Clear an old `TO_EMAIL` shell
+variable or explicitly set it to `mail@raj.kr` when deploying to Workspace.
+Unrelated Lambda environment variables are preserved.
+
+The Lambda execution role needs `ses:SendEmail` and CloudWatch logging access.
+Keep the SES sender identity verified and DKIM enabled in the sending region.
+Google handles incoming mail; Gmail SMTP credentials are not used by this form.
+
+## Testing
+
+```sh
+npm --prefix lambda/contact-form ci
+npm --prefix lambda/contact-form test
+node --test scripts/email-deployment.test.js
 ```
 
-### 4. Test Locally
+Tests mock SES and do not send real emails. They cover the Workspace destination,
+custom recipients, visitor Reply-To, field validation, HTML escaping, preflight,
+honeypot handling, request limits, and provider failures. SES acceptance does
+not by itself confirm inbox delivery.
 
-```bash
-npm test
+## Monitoring
+
+```sh
+aws logs tail /aws/lambda/contact-form-handler --follow --region ap-south-1
 ```
 
-## ⚙️ Configuration
-
-### Environment Variables
-
-| Variable         | Description             | Required | Default                     |
-| ---------------- | ----------------------- | -------- | --------------------------- |
-| `AWS_REGION`     | AWS region for SES      | No       | `us-east-1`                 |
-| `FROM_EMAIL`     | Sender email address    | Yes      | `noreply@yourdomain.com`    |
-| `TO_EMAIL`       | Recipient email address | Yes      | `your-email@yourdomain.com` |
-| `REPLY_TO_EMAIL` | Reply-to email address  | Yes      | `your-email@yourdomain.com` |
-
-### IAM Permissions
-
-Your Lambda execution role needs these permissions:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ses:SendEmail",
-        "ses:SendRawEmail"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "arn:aws:logs:*:*:*"
-    }
-  ]
-}
-```
-
-## 📧 Email Configuration
-
-### SES Setup
-
-1. **Verify Email Addresses**:
-   ```bash
-   aws ses verify-email-identity --email-address your-email@yourdomain.com
-   aws ses verify-email-identity --email-address noreply@yourdomain.com
-   ```
-
-2. **Verify Domain** (recommended):
-   ```bash
-   aws ses verify-domain-identity --domain yourdomain.com
-   ```
-
-3. **Request Production Access** (if needed):
-   - Go to AWS SES Console
-   - Request production access to send emails to unverified addresses
-
-### Email Templates
-
-The function sends both HTML and text versions of the email with:
-- Contact form data (name, email, message)
-- Submission timestamp
-- IP address and user agent
-- Professional formatting
-
-## 🧪 Testing
-
-### Local Testing
-
-```bash
-npm test
-```
-
-This runs several test scenarios:
-- Valid form submission
-- Invalid email format
-- Missing required fields
-- CORS preflight request
-
-### Manual Testing
-
-Test with curl:
-
-```bash
-curl -X POST https://your-api-gateway-url.amazonaws.com/prod/contact \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "name": "Test User",
-    "email": "test@example.com",
-    "message": "This is a test message"
-  }'
-```
-
-## 🔧 Development
-
-### Project Structure
-
-- **`index.js`**: Main Lambda handler with email sending logic
-- **`test.js`**: Local testing script with mock events
-- **`deploy.sh`**: Automated deployment script
-- **`package.json`**: Dependencies and build scripts
-
-### Key Features
-
-- **Input Validation**: Validates required fields and email format
-- **XSS Protection**: Sanitizes user input
-- **Error Handling**: Comprehensive error handling and logging
-- **CORS Support**: Handles preflight requests
-- **Dual Email Format**: Sends both HTML and text versions
-- **Logging**: Detailed CloudWatch logging
-
-### Customization
-
-To customize the email template, modify the `emailParams` object in `index.js`:
-
-```javascript
-const emailParams = {
-  Source: fromEmail,
-  Destination: { ToAddresses: [toEmail] },
-  ReplyToAddresses: [replyToEmail],
-  Message: {
-    Subject: { Data: 'Your Custom Subject' },
-    Body: {
-      Text: { Data: 'Your custom text template' },
-      Html: { Data: 'Your custom HTML template' }
-    }
-  }
-};
-```
-
-## 📊 Monitoring
-
-### CloudWatch Logs
-
-View function logs:
-
-```bash
-aws logs tail /aws/lambda/contact-form-handler --follow
-```
-
-### Metrics
-
-Monitor these CloudWatch metrics:
-- **Invocations**: Number of function calls
-- **Errors**: Number of failed executions
-- **Duration**: Execution time
-- **Throttles**: Number of throttled invocations
-
-### Alarms
-
-Set up CloudWatch alarms for:
-- High error rate
-- Long execution times
-- Function throttling
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-1. **SES Email Rejected**:
-   - Verify email addresses in SES
-   - Check if you're in SES sandbox mode
-   - Ensure proper IAM permissions
-
-2. **CORS Errors**:
-   - Verify CORS headers in response
-   - Check API Gateway CORS configuration
-
-3. **Function Timeout**:
-   - Increase timeout in function configuration
-   - Check for infinite loops or blocking operations
-
-4. **Permission Denied**:
-   - Verify IAM role has required permissions
-   - Check SES policy configuration
-
-### Debug Commands
-
-```bash
-# View function configuration
-aws lambda get-function --function-name contact-form-handler
-
-# View function logs
-aws logs describe-log-groups --log-group-name-prefix /aws/lambda/contact-form-handler
-
-# Test function with sample event
-aws lambda invoke --function-name contact-form-handler --payload file://test-event.json response.json
-```
-
-## 🔄 Updates
-
-### Updating the Function
-
-1. Make your changes to `index.js`
-2. Run `npm run build` to create new deployment package
-3. Run `./deploy.sh` to deploy updates
-
-### Version Management
-
-```bash
-# Publish new version
-aws lambda publish-version --function-name contact-form-handler
-
-# Create alias
-aws lambda create-alias --function-name contact-form-handler --name production --function-version 1
-```
-
-## 📚 Resources
-
-- [AWS Lambda Documentation](https://docs.aws.amazon.com/lambda/)
-- [AWS SES Documentation](https://docs.aws.amazon.com/ses/)
-- [API Gateway Documentation](https://docs.aws.amazon.com/apigateway/)
-- [Node.js AWS SDK](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/)
-
-## 📝 License
-
-MIT License - see the main project LICENSE file for details.
+Logs record request/message IDs without message contents or visitor addresses.
+If delivery fails, check the Lambda recipient, SES identity/DKIM status, sending
+permissions and quotas, and the Workspace inbox/spam folder.

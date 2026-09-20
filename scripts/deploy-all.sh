@@ -102,8 +102,7 @@ if [ "$DEPLOY_LAMBDA" = true ]; then
         exit 1
     fi
     
-    cd ../email-processor
-    ./deploy.sh
+    # Google Workspace receives domain mail directly; the old SES forwarder is retired.
     cd ../..
 fi
 
