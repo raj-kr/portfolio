@@ -5,7 +5,9 @@ name: Deploy to S3 & Invalidate CloudFront
 # - AWS_SECRET_ACCESS_KEY: AWS secret key for S3 deployment
 # - AWS_REGION: AWS region (e.g., us-east-1)
 # - S3_BUCKET: S3 bucket name for deployment
-# - DISTRIBUTION_ID: CloudFront distribution ID for invalidation
+# - DISTRIBUTION_ID: CloudFront distribution ID for SPA fallback and invalidation
+# AWS identity also needs cloudfront:GetDistributionConfig, cloudfront:UpdateDistribution,
+# and cloudfront:GetDistribution on this distribution.
 # - VITE_GA_ID: Google Analytics Measurement ID (optional, format: G-XXXXXXXXXX)
 
 on:
@@ -33,6 +35,9 @@ jobs:
         run: npm run build
         env:
           VITE_GA_ID: ${{ secrets.VITE_GA_ID }}
+
+      - name: Test SPA hosting configuration
+        run: node --test scripts/spa-hosting.test.js
 
       - name: Validate Analytics Configuration
         run: npm run validate:analytics
@@ -88,6 +93,14 @@ jobs:
           fi
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET }} --delete
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      - name: Configure CloudFront SPA fallback
+        run: node scripts/configure-spa-hosting.js
+        env:
+          DISTRIBUTION_ID: ${{ secrets.DISTRIBUTION_ID }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
