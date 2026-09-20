@@ -23,10 +23,10 @@ This is the portfolio website of Raj Kumar, a Full Stack Developer with 5+ years
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/yourusername/portfolio.git
-cd portfolio
-```
+ ```bash
+   git clone https://github.com/yourusername/portfolio.git
+   cd portfolio
+ ```
 
 2. Install dependencies:
 
@@ -51,6 +51,7 @@ yarn dev
 The portfolio includes a contact form that sends emails via AWS Lambda and SES:
 
 1. **Deploy Lambda function**:
+
    ```bash
    cd lambda/contact-form
    npm install
@@ -77,6 +78,7 @@ The website can be deployed to various platforms:
    - Automatic build and deployment
 
 2. **Manual Deployment**:
+
    ```bash
    npm run build
    # Upload 'dist' folder to your hosting service
@@ -91,11 +93,13 @@ Deploy both frontend and Lambda:
 ```
 
 Deploy only Lambda:
+
 ```bash
 ./scripts/deploy-all.sh --lambda-only
 ```
 
 Deploy only frontend:
+
 ```bash
 ./scripts/deploy-all.sh --frontend-only
 ```

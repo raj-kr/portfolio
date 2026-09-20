@@ -7,7 +7,7 @@ const About: React.FC = () => {
         <h2 className="text-3xl font-bold text-center mb-8">About Me</h2>
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-lg mb-4">
-            I have 5+ years of experience in designing and building scalable web applications. 
+            I have 6+ years of experience in designing and building scalable web applications. 
             Expertise in JavaScript, TypeScript, ReactJS, NodeJS, and MongoDB, with a focus on 
             performance optimisation, micro service architecture, and API development.
           </p>
